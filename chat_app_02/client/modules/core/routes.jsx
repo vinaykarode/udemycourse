@@ -1,7 +1,7 @@
 import React from 'react';
 import {mount} from 'react-mounter';
 import Layout from './components/MainLayout.jsx';
-
+import ChatsLayout from './components/ChatsLayout.jsx';
 
 export default function (injectDeps, {FlowRouter}) {
     const MainLayoutCtx = injectDeps(Layout);
@@ -10,7 +10,7 @@ export default function (injectDeps, {FlowRouter}) {
         name: 'home',
         action() {
             mount(MainLayoutCtx, {
-                content: () => ('hurray great start with react meteor mantra')
+                content: () => (<ChatsLayout />)
             })
         }
     })

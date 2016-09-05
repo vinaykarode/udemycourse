@@ -2,9 +2,9 @@ import React from 'react';
 
 const Layout = ({content}) => (
     <div>
-        <div>
+        <main>
             {content()}
-        </div>
+        </main>
     </div>
 );
 export default Layout;

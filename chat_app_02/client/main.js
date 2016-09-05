@@ -1,5 +1,6 @@
 import {createApp} from 'mantra-core';
 import initContext from './configs/context';
+import PageSetup from "./configs/page_setup";
 
 // modules
 import coreModule from './modules/core';
@@ -11,3 +12,4 @@ const context = initContext();
 const app = createApp(context);
 app.loadModule(coreModule);
 app.init();
+PageSetup();
