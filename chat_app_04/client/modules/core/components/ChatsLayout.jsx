@@ -1,9 +1,9 @@
 import React from 'react';
+import {Messages} from '/lib/collections/messages-collections';
 
 class ChatsLayout extends React.Component {
   render() {
       const {message} = this.props;
-      console.log(message);
       return (
         <div>
             {/*<nav className="top-nav">
@@ -12,11 +12,11 @@ class ChatsLayout extends React.Component {
                   </div>
             </nav>
             */}
-            <div className=" container">
+            <div className=" container" id ='messages'>
               {message.map(mes => (
-                <div className=" row" key={mes}>
+                <div className=" row" key={mes._id}>
                   <div className="chip">
-                    {mes}
+                    {mes.message}
                   </div>
                 </div>
               ))}
@@ -52,8 +52,11 @@ class ChatsLayout extends React.Component {
     e.preventDefault();
     const {message} = this.refs;
     const {send} = this.props;
-    send(message.value)
-    message.getInputDOMNode().value = '';
+    Messages.insert({'message':message.value});
+    message.value = '';
+    $('html, body').stop().animate({
+      scrollTop: $('.container')[0].scrollHeight
+    }, 1000);
     // console.log(message.value);
   }
 }
