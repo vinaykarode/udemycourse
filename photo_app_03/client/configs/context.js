@@ -7,5 +7,6 @@ export default function() {
     return {
         Meteor,
         FlowRouter,
+        LocalState: new ReactiveDict(),
     }
 }

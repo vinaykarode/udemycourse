@@ -2,7 +2,7 @@ import React from 'react';
 
 const Layout = ({content}) => (
     <div>
-        <div className='container'>
+        <div className='container' id='container'>
             {content()}
         </div>
     </div>
