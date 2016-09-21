@@ -6,9 +6,9 @@ class Dashboard extends React.Component {
     const { photos, currentUser } = this.props;
         return(
           <div>
-              
+
               {currentUser ? null :<RegisterLogin />}
-              
+
               {photos.map(photo => (
                 <div className="col s12 m6 l3"  key={photo._id}>
                   <div className="card grey lighten-5">
@@ -18,11 +18,11 @@ class Dashboard extends React.Component {
                   </div>
                 </div>
               ))}
-              
+
             <div className="top-loading-bar" id="loadingBar"></div>
-            
+
             <div className="fixed-action-btn" style={{'bottom': '45px', 'right': '24px'}}>
-              <a className="btn-floating btn-large red">
+              <a className="btn-floating btn-large red" onClick={this.openfab.bind(this)}>
                 <i className="mdi mdi-plus"></i>
               </a>
               <ul>
@@ -32,11 +32,17 @@ class Dashboard extends React.Component {
                      </label>
                 </li>
               </ul>
-            </div> 
+            </div>
           </div>
         )
     }
-    
+
+    openfab(e){
+      e.preventDefault();
+      console.log('openingfab');
+      $('.fixed-action-btn').openFAB();
+    }
+
     photoUpload(e){
       e.preventDefault();
       const {uploadPhoto} = this.props;
