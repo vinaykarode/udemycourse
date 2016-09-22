@@ -18,10 +18,10 @@ let uploadPhoto = ({Meteor, LocalState, FlowRouter}, file) => {
     });
 
     let uploader_progress = 0
+    // onSuccess(file);
     uploader.send(file, function (error, downloadUrl) {
         computation.stop();
         if (error) {
-            // Log service detailed response.
             console.error('Error uploading', uploader.xhr.response);
             alert (error);
         }
@@ -37,6 +37,8 @@ let uploadPhoto = ({Meteor, LocalState, FlowRouter}, file) => {
             }
         }
     });
+    
+    
 
   //Track Progress
   let computation = Tracker.autorun(() => {
@@ -82,12 +84,24 @@ let getImgData = (img) => {
 //     return theBlob;
 // }
 
-let cordovaUploadPhoto = ({Meteor, LocalState, FlowRouter}) =>{
-  let onSuccess = (imageURI) => {
-    const fileName = "" + (new Date()).getTime() + ".jpg";
-    s3Uploader.upload(imageURI, fileName);
-  }
+let filetransfer = () =>{
+  const ft = new FileTransfer();
+  const options = new FileUploadOptions();
+}
+let onSuccess = (imageURI) => {
+  const fileName = "" + (new Date()).getTime() + ".jpg";
+  Meteor.call('signing', fileName, (err, success) => {
+      if (err) {
+          console.log(err);
+      } else {
+          console.log(success);
+      }
+  })
+}
 
+
+let cordovaUploadPhoto = ({Meteor, LocalState, FlowRouter}) =>{
+  
   let onFail = (message) => {
       alert('Failed because: ' + message);
   }

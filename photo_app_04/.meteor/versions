@@ -21,7 +21,6 @@ caching-html-compiler@1.0.6
 callback-hook@1.0.9
 check@1.2.3
 chuangbo:cookie@1.1.0
-coffeescript@1.0.17
 dapearce:material-icons@0.1.5
 ddp@1.2.5
 ddp-client@1.2.9
@@ -50,7 +49,6 @@ jquery@1.11.9
 kadira:dochead@1.5.0
 kadira:flow-router-ssr@3.13.0
 launch-screen@1.0.12
-lepozepo:s3@5.2.2
 less@2.6.5
 livedata@1.0.18
 localstorage@1.0.11
