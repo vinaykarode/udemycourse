@@ -24,3 +24,10 @@ Slingshot.createDirective("myPhotoUploads", Slingshot.S3Storage, {
     return user.emails[0].address + "/" + file.name;
   }
 });
+
+// S3.config = {
+//     key: Meteor.settings.AWSAccessKeyId,
+//     secret: Meteor.settings.AWSSecretAccessKey,
+//     bucket: 'photoappvini',
+//     region: 'eu-west-1' // Only needed if not "us-east-1" or "us-standard"
+// };
