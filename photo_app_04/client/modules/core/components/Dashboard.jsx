@@ -96,8 +96,8 @@ class Dashboard extends React.Component {
 
     getCameraImage(e){
       e.preventDefault();
-      // const {cordovaUploadPhoto} = this.props;
-      // cordovaUploadPhoto();
+      const {cordovaCameraUploadPhoto} = this.props;
+      cordovaCameraUploadPhoto();
     }
 }
 

@@ -19,6 +19,7 @@ export const composer = ({context, eventId}, onData) => {
 export const depsMapper = (context, actions) => ({
     uploadPhoto: actions.dashboard.uploadPhoto,
     cordovaUploadPhoto: actions.dashboard.cordovaUploadPhoto,
+    cordovaCameraUploadPhoto: actions.dashboard.cordovaCameraUploadPhoto,
     context: () => context
 });
 

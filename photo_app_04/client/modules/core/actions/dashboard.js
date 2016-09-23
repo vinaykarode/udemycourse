@@ -37,8 +37,8 @@ let uploadPhoto = ({Meteor, LocalState, FlowRouter}, file) => {
             }
         }
     });
-    
-    
+
+
 
   //Track Progress
   let computation = Tracker.autorun(() => {
@@ -51,57 +51,58 @@ let uploadPhoto = ({Meteor, LocalState, FlowRouter}, file) => {
 
 }
 
-let getImgData = (img) => {
-  var extension = 'jpg';
-  var type = 'image/jpeg';
-  var base64result = img.split(',')[0];
-  if (base64result.indexOf("png") > -1) {
-    extension = 'png';
-    type = 'image/png';
-  }
 
-  return {
-    extension: extension,
-    type: type
-  };
-}
-
-// let dataURItoBlob = (dataURI) => {
-//     var byteString = atob(dataURI.split(',')[1]);
-//     var ab = new ArrayBuffer(byteString.length);
-//     var ia = new Uint8Array(ab);
-//     for (var i = 0; i < byteString.length; i++) {
-//         ia[i] = byteString.charCodeAt(i);
-//     }
-//     return new Blob([ab], { type: 'image/jpeg' });
-// }
-//
-// let blobToFile = (theBlob) =>{
-//     //A Blob() is almost a File() - it's just missing the two properties below which we will add
-//     theBlob.lastModifiedDate = new Date();
-//     theBlob.name = fileName;
-//     filename = Math.floor(Math.random() * (max - min + 1) + min)
-//     return theBlob;
-// }
-
-let filetransfer = () =>{
+let filetransfer = (data, imageURI) =>{
+  console.log(data);
+  console.log(imageURI);
   const ft = new FileTransfer();
   const options = new FileUploadOptions();
+  options.fileKey = "file";
+  options.fileName = data.filename;
+  options.mimeType = "image/jpeg";
+  options.chunkedMode = false;
+  options.params = {
+      "key": data.folder + data.filename,
+      "AWSAccessKeyId": data.awsKey,
+      "acl": "public-read",
+      "policy": data.policy,
+      "signature": data.signature,
+      "Content-Type": "image/jpeg"
+  };
+
+  ft.upload(imageURI, "https://" + data.bucket + ".s3.amazonaws.com/",
+      function (success) {
+          downloadUrl = success.headers.Location;
+          Meteor.call('photos.uploaded', downloadUrl, (err, success) => {
+              if (err) {
+                  return LocalState.set('PHOTO_UPDATE_ERROR', err.message);
+              } else {
+
+              }
+          })
+      },
+      function (error) {
+          alert("Upload failed");
+          console.log(error.body);
+      }, options);
+
 }
+
 let onSuccess = (imageURI) => {
   const fileName = "" + (new Date()).getTime() + ".jpg";
-  Meteor.call('signing', fileName, (err, success) => {
+  const email = Meteor.user().emails[0].address
+  Meteor.call('signing', fileName, email, (err, success) => {
       if (err) {
           console.log(err);
       } else {
-          console.log(success);
+          filetransfer(success, imageURI, fileName, email);
       }
   })
 }
 
 
 let cordovaUploadPhoto = ({Meteor, LocalState, FlowRouter}) =>{
-  
+
   let onFail = (message) => {
       alert('Failed because: ' + message);
   }
@@ -114,12 +115,27 @@ let cordovaUploadPhoto = ({Meteor, LocalState, FlowRouter}) =>{
     sourceType: Camera.PictureSourceType.PHOTOLIBRARY,
   };
   navigator.camera.getPicture(onSuccess, onFail, options);
+}
 
+let cordovaCameraUploadPhoto = ({Meteor, LocalState, FlowRouter}) =>{
 
+  let onFail = (message) => {
+      alert('Failed because: ' + message);
+  }
+  const options = {
+    quality: 45,
+    targetWidth: 1000,
+    targetHeight: 1000,
+    destinationType: Camera.DestinationType.FILE_URI,
+    encodingType: Camera.EncodingType.JPEG,
+    sourceType: Camera.PictureSourceType.CAMERA,
+  };
+  navigator.camera.getPicture(onSuccess, onFail, options);
 }
 
 
 export default {
   uploadPhoto,
-  cordovaUploadPhoto
+  cordovaUploadPhoto,
+  cordovaCameraUploadPhoto
 }
