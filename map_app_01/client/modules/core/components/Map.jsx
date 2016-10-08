@@ -28,7 +28,13 @@ class Map extends React.Component {
                 center: new google.maps.LatLng(latitude, longitude),
                 zoom: 16
               }
-            });            
+            }); 
+            GoogleMaps.ready('Map', function(map) {
+              let marker = new google.maps.Marker({
+                position: map.options.center,
+                map: map.instance
+              });
+            });
           };
       
         navigator.geolocation.getCurrentPosition(geoSuccess)
